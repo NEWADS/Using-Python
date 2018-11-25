@@ -60,7 +60,7 @@ else:
     video = list(set(video).difference(set(delist)))
     # print(MultiChap)
     """
-    remain unsolved:
+    solved:
     mode 1: if there is no "[0-9]" sub or video file num is less than 2, just rename all the sub files...
     mode 2: if video file num is more than 1, then rename sub according to acquired chapter, like [01] -> [01]......
     """
