@@ -20,7 +20,7 @@ def matchlang(name):
     if len(tmpp) <= 2:
         return -1
     else:
-        pat = re.compile("chs|cht|eng|jpn|简体|英文|日语|&")
+        pat = re.compile("chs|cht|eng|jpn|简体|英文|日语|&|tc|sc")
         if pat.match(tmpp[len(tmpp)-2]):
             return 0
         else:
@@ -54,10 +54,10 @@ else:
     delist = []
     MultiChap = False
     for index in range(len(video)):
-        if re.search("sample", video[index], re.I):
+        if re.search("sample|SP|PV|CM|Preview|ED", video[index], re.I):
             delist.append(video[index])
 
-        if re.match(".\n*\[[0-9]{2}\].\n*", video[index], re.I) or len(video) >= 10:
+        if re.match(".\n*\[[0-9]{2}\].\n*", video[index], re.I) or len(video) >= 3:
             MultiChap = True
     video = list(set(video).difference(set(delist)))
     # print(MultiChap)
