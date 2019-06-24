@@ -28,11 +28,11 @@ def matchlang(name):
 
 
 path = input("Show me the path: ")
-print("The path is:", path)
+print("The path is: {}".format(path))
 try:
     dirs = os.listdir(path)
 except IOError:
-    print("Invalid path")
+    print("Invalid path.")
 else:
     os.chdir(path)  # Change working folder
     sub = []
@@ -40,10 +40,10 @@ else:
     for index in range(len(dirs)):
         # if re.match(".mkv", dirs[index][-4:]):
         if re.match(".mkv|.mp4|.avi", dirs[index][-4:]):
-            print("We got video file: ", dirs[index])
+            print("We got video file: {}.".format(dirs[index]))
             video.append(dirs[index])
         elif re.match(".ass|.ssa|.sub|.srt", dirs[index][-4:]):
-            print("We got subtitle: ", dirs[index])
+            print("We got subtitle: {}.".format(dirs[index]))
             sub.append(dirs[index])
 
         # in case we don't have files:
@@ -54,7 +54,7 @@ else:
     delist = []
     MultiChap = False
     for index in range(len(video)):
-        if re.search("sample|SP|PV|CM|Preview|ED", video[index], re.I):
+        if re.search("sample|SP|PV|CM|Preview|ED", video[index]):  # incase words contained "ed" be detected...
             delist.append(video[index])
 
         if re.match(".\n*\[[0-9]{2}\].\n*", video[index], re.I) or len(video) >= 3:
@@ -75,13 +75,13 @@ else:
             if matchlang(sub[index]) is 0:
                 tmp = pattern.split(sub[index])
                 lang = tmp[len(tmp) - 2]
-                tmp = videoname + "." + lang + "." + tmp[len(tmp)-1]
-                print("Old file name: ", sub[index], "This is the new name of your sub: ", tmp)
+                tmp = "{}.{}.{}".format(videoname, lang, tmp[len(tmp)-1])
+                print("Old file name: {}. \nThis is the new name of your sub: {}.".format(sub[index], tmp))
                 newsublist.append(tmp)
             else:
                 tmp = pattern.split(sub[index])
-                tmp = videoname + "." + tmp[len(tmp)-1]
-                print("Old file name: ", sub[index], "This is the new name of your sub: ", tmp)
+                tmp = "{}.{}".format(videoname, tmp[len(tmp)-1])
+                print("Old file name: {}. \nThis is the new name of your sub: {}.".format(sub[index], tmp))
                 newsublist.append(tmp)
         situ = input("Do you want to proceed? [Y/N]")
         if situ is "Y" or "y" and len(newsublist) == len(sub):  # in case sth's wrong!
@@ -92,7 +92,7 @@ else:
                     print("Something's wrong with you sub file...")  # EXIT 2!
                     exit()
                 else:
-                    print("Successfully replace ", sub[index], " into ", newsublist[index])
+                    print("Successfully replace {} into {}.".format(sub[index], newsublist[index]))
             print("Done, exit...")  # EXIT 3!
             exit()
         else:
@@ -105,20 +105,20 @@ else:
             videobj = pattern.search(video[index])
             if videobj:
                 videobj = re.search(r"\d+", videobj.group(0))
-                print(video[index], " is regarded as Chapter", videobj.group(0))
+                print("{} is regared as Chapter {}.".format(video[index], videobj.group(0)))
                 for subindex in range(len(sub)):
-                    fun = ".*"+videobj.group(0)+".*"
+                    fun = ".*{}.*".format(videobj.group(0))
                     subpattern = re.compile(fun, re.I)
                     pattern = re.compile(r"\.+")
                     if subpattern.match(sub[subindex]) and matchlang(sub[subindex]) is 0:
                         tmp = pattern.split(sub[subindex])
                         lang = tmp[len(tmp) - 2]
-                        tmp = video[index][:-4] + "." + lang + "." + tmp[len(tmp) - 1]
-                        print("Old file name: ", sub[subindex], "This is the new name of your sub: ", tmp)
+                        tmp = "{}.{}.{}".format(video[index][:-4], lang, tmp[len(tmp) - 1])
+                        print("Old file name: {}. \nThis is the new name of your sub: {}.".format(sub[subindex], tmp))
                     elif subpattern.match(sub[subindex]) and matchlang(sub[subindex]) is -1:
                         tmp = pattern.split(sub[subindex])
-                        tmp = video[index][:-4] + "." + tmp[len(tmp) - 1]
-                        print("Old file name: ", sub[subindex], "This is the new name of your sub: ", tmp)
+                        tmp = "{}.{}".format(video[index][:-4], tmp[len(tmp) - 1])
+                        print("Old file name: {}. \nThis is the new name of your sub: {}.".format(sub[subindex], tmp))
                     else:
                         # print("Unresolved sub file: ", sub[subindex], " Skipped...")
                         continue
@@ -130,12 +130,12 @@ else:
                             print("Something's wrong with you sub file...")  # EXIT 5!
                             exit()
                         else:
-                            print("Successfully replace ", sub[subindex], " into ", tmp)
+                            print("Successfully replace {} into {}.".format(sub[subindex], tmp))
                     else:
                         continue
                         # print(sub[subindex], "=>", videobj.group(0))
             else:
-                print(video[index], "can't be regarded as a chapter, skipped...")
+                print("{} can't be regarded as a chapter, skipped...".format(video[index]))
                 continue
         print("That's the end of this folder, bye.")
         exit()
